@@ -197,11 +197,9 @@ app.get('/blog', function(request, response) {
                     distance: getDistanceTime(data.post_at)
                 } 
             })      
-
             response.render('blog', {isLogin : request.session.isLogin, user: request.session.user, blogs: newData})
         })
-    })
-    
+    })    
 })
 
 app.post('/blog', upload.single('inputImage'), function(request, response) {
@@ -281,7 +279,10 @@ app.get('/delete-blog/:id', function(request, response) {
 app.get('/blog-detail/:id', function(request, response) {
  
     let id = request.params.id
-    
+    // const query = `SELECT tb_blog.id, title, tb_blog.content, tb_blog.image, tb_blog.post_at, tb_user.name AS author, tb_blog.author_id
+    // FROM tb_blog LEFT JOIN tb_user ON tb_blog.author_id = tb_user.id WHERE id = ${id}`
+
+
     db.connect(function(err, client, done)  {
         if (err) throw err
 
@@ -289,8 +290,12 @@ app.get('/blog-detail/:id', function(request, response) {
             if (err) throw err
 
             let dataView = result.rows[0]
+            let dataDetail = {
+                ...dataView,
+                postAt: getFullTime(dataView.post_at)
+            }
             
-            response.render('blog-detail', {id: id, blog: dataView})
+            response.render('blog-detail', {id: id, blog: dataDetail, isLogin: request.session.isLogin, user: request.session.user})
         })
     })
 })

@@ -17,7 +17,19 @@
       </div>
 
       <div class="right">
-          <a href="/contact">Contact Me</a>
+      {{#if isLogin}}
+
+      <span class="user" aria-current="page">Hallo, {{user.name}}</span>
+      <a class="login" href="/logout">Logout</a>
+
+      {{else}}
+
+      <a class="login" href="/register">Register</a>
+      <a class="login" href="/login">Login</a>
+
+      {{/if}}
+
+      <a href="/contact">Contact Me</a>
       </div>
   </nav>
 
@@ -27,7 +39,7 @@
       <div class="blog-detail-container">
         <h1>{{blog.title}}</h1>
         <div class="author">{{blog.postAt}} | {{blog.author}}</div>
-        <img src="../uploads/{{this.image}}" alt="detail" />
+        <img src="../uploads/{{blog.image}}" alt="detail" />
         <p>
           {{blog.content}}
         </p>
