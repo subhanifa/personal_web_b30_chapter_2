@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Web</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css"
+      rel="stylesheet">
+    <link rel="stylesheet" href="../public/assets/css/style.css">
+
+</head>
+
+<body>
+    
+    <!-- Awal Navbar -->
+    
+    <nav>
+        <div class="left">
+            <img src="../public/assets/images/logo.png" alt="left-logo" class="img-nav-left">
+
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/blog">Blog</a></li>
+            </ul>
+
+        </div>
+
+
+        <div class="right">
+        {{#if isLogin}}
+
+        <span class="user" aria-current="page">Hallo, {{user.name}}</span>
+        <a class="login" href="/logout">Logout</a>
+
+        {{else}}
+
+        <a class="login" href="/register">Register</a>
+        <a class="login" href="/login">Login</a>
+
+        {{/if}}
+
+        <a href="/contact">Contact Me</a>
+        </div>
+    </nav>
+
+    <!-- Akhir Navbar -->
+
+    <!-- Start Container -->
+
+    <div class="container">
+        <div class="section"> 
+
+            <!-- Left Content Start Here -->
+            <div class="left-section"> 
+                <div class="card">
+                    <div class="img-card">
+                        <img src="../public/assets/images/Kocheng.jpg" alt="" class="img-profile">
+                    </div>
+
+                    <h1>Subhan Hanifa</h1>
+                    <p>I was born on August, 
+                        1997. I am Indonesian
+                        citizen and my status is
+                        unmarried. Able to work with a team or individually.</p>
+                        <table class="main-table" cellpadding="8px">
+
+                            <thead>
+                                <tr>
+                                    <th>Experience</th>
+                                    <th>Year</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {{#each blog}}
+                                <tr>
+                                    <td>{{this.experience}}</td>
+                                    <td>{{this.year}}</td>
+                                </tr>
+                                {{/each}}
+                                
+                            </tbody>
+
+                        </table>
+                </div>
+            </div> 
+            <!-- Left Content End Here -->              
+
+            <!-- Right Content Start Here -->
+            <div class="right-section"> 
+                <h1>What i do</h1>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                        Dolore id earum explicabo molestias aliquid sunt voluptates enim eaque adipisci praesentium.</p>
+
+                <div class="skill-content">
+
+                    <div class="left-skill">
+                        <img src="../public/assets/images/js.png" alt="Logo JS">
+                            <h4>Frontend Developer</h4>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum, temporibus.</p>
+                    </div>
+                        
+                    <div class="mid-skill">
+                        <img src="../public/assets/images/git.png" alt="Logo GIT">
+                            <h4>Version Control</h4>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum, temporibus.</p>
+                    </div>
+
+                    <div class="right-skill">
+                        <img src="../public/assets/images/deploy.png" alt="Logo Automated">
+                            <h4>Automated Deployment</h4>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum, temporibus.</p>
+                    </div>
+
+                </div>
+
+                <!-- Social Media Start Here -->
+                <div class="contact">
+                          <div class="social-icon">
+                            <a href="https://www.facebook.com/"><i class="bx bxl-facebook"></i></a>
+                          </div>
+                          <div class="social-icon">
+                            <a href="https://www.instagram.com/subhanifa/"><i class="bx bxl-instagram-alt"></i></a>
+                          </div>
+                          <div class="social-icon">
+                            <a href="https://twitter.com/subhanifa"><i class="bx bxl-twitter"></i></a>
+                          </div>
+                          <div class="social-icon">
+                            <a href="https://www.gmail.com"><i class="bx bxl-gmail"></i></a>
+                          </div>
+                          <div class="social-icon">
+                            <a href="https://wa.me/6285771691593"><i class="bx bxl-whatsapp"></i></a>
+                          </div>
+                </div>
+                <!-- Social Media End Here -->
+
+            </div> 
+            <!-- Right Content End Here -->
+
+        </div>
+    </div>
+
+    <!-- End Container -->
+</body>
+
+</html>

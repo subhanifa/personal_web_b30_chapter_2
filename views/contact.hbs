@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form</title>
+
+    <link rel="stylesheet" href="../public/assets/css/style.css">
+
+    
+</head>
+<body>
+
+        <!-- Awal Navbar -->
+        <nav>
+
+            <div class="left">
+                <img src="../public/assets/images/logo.png" alt="logo">
+                <ul>
+                    <li><a href="/">Home</a></li>
+        
+                    <li><a href="/blog">Blog</a></li>
+        
+                </ul>
+            </div>
+            
+            <div class="right">
+
+                {{#if isLogin}}
+            
+                <span class="user" aria-current="page">Hallo, {{user.name}}</span>
+                <a class="login" href="/logout">Logout</a>
+
+                {{else}}
+
+                <a class="login" href="/register">Register</a>
+                <a class="login" href="/login">Login</a>
+
+                {{/if}}
+
+                <a href="/contact">Contact Me</a>
+            </div>
+            
+        </nav>
+        <!-- Akhir Navbar -->
+
+        <!-- Awal Content -->
+        <div class="container">
+            <form>
+
+                <div>
+                    <label for="input-name">Name</label>        
+                    <input id="input-name" type="text" placeholder="Your Name">
+                </div>
+
+                <div>        
+                    <label for="input-email">E-Mail</label> 
+                    <input id="input-email" type="email" placeholder="E-Mail" >
+                </div>
+
+                <div>
+                    <label for="input-number">Phone Number</label> 
+                    <input id="input-number" type="number" placeholder="Phone Number">
+                </div>
+
+                <div>
+                    <label for="input-subject">Subject</label>
+                    <select id="input-subject">
+                        <option value="Privacy Police">Privacy Police</option>
+                        <option value="Problem with our site">Problem with our site</option>
+                        <option value="Job Hiring">Job Hiring</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="input-message">Message</label>
+                    <textarea id="input-message" placeholder="Input Here" cols="30" rows="10"></textarea>
+                </div>
+
+        <p class="skill-title">Skill</p>
+        <div class="skill-check">
+            <div>
+                <label for="">HTML</label>
+                <input type="checkbox" id="html" value="HTML" />
+            </div>
+
+            <div>
+                <label for="">CSS</label>
+                <input type="checkbox" id="css" value="CSS" />
+            </div>
+
+            <div>
+                <label for="">Javascript</label>
+                <input type="checkbox" id="javaScript" value="Javascript" />
+            </div>
+        </div>
+
+            <button type="button" onclick="submitData()"><img class="img-btn" src="../public/assets/images/icon.svg">
+            Submit
+            </button>
+
+        </form>
+        
+        </div>
+        <!-- Akhir Content -->
+        <script src="../public/assets/js/form.js"></script>
+</body>
+</html>

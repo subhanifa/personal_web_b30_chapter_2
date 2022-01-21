@@ -1,0 +1,95 @@
+<html>
+  <head>
+    <title>Creating Blog Page</title>
+    <link rel="stylesheet" href="../public/assets/css/blogstyle.css" />
+  </head>
+  <body>
+    <!-- NavBar -->
+
+    <nav>
+      <div class="left">
+          <img src="../public/assets/images/logo.png" alt="left-logo" class="img-nav-left">
+
+          <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog">Blog</a></li>
+          </ul>
+      </div>
+
+
+      <div class="right">
+
+        {{#if isLogin}}
+
+        <span class="user" aria-current="page">Hallo, {{user.name}}</span>
+        <a class="login" href="/logout">Logout</a>
+
+        {{else}}
+
+        <a class="login" href="/register">Register</a>
+        <a class="login" href="/login">Login</a>
+
+        {{/if}}
+
+        <a href="/contact">Contact Me</a>
+      </div>
+  </nav>
+
+    <!-- Blog -->
+    <!-- Form -->
+    {{#if messages.success}}
+    <div class="alert alert-danger" role="alert">
+    {{messages.success}}
+    </div>
+    {{/if}}
+
+    <div class="blog">
+      {{#if isLogin}}
+      <div style="text-align: right; margin-right:130px; margin-top:50px">
+        <a href="/add-blog" style="background-color: orangered; padding: 7px 20px; border-radius: 5px; color:white">Add New Blog</a>     
+      </div>
+      {{/if}} 
+
+      <div id="contents" class="blog-list">
+        <!-- dynamic content would be here -->
+        {{#each blogs}}
+        <div class="blog-list-item">
+          <div class="blog-image">
+            <img src="../uploads/{{this.image}}" alt="" />
+          </div>          
+          <div class="blog-content">
+            
+            {{#if isLogin}}
+            <div class="btn-group">
+              {{!-- <button class="btn-edit" type="button">Edit Post</button>
+              <button class="btn-post" type="button">Delete Blog</button> --}}
+              <a href="/edit-blog/{{this.id}}" class="btn-edit">Edit Post</a>
+              <a href="/delete-blog/{{this.id}}" class="btn-post">Delete Post</a>
+            </div>
+            {{/if}}
+
+            <h1>
+              <a href="/blog-detail/{{this.id}}" target="_blank"
+                >{{this.title}}</a
+              >
+            </h1>
+            <div class="detail-blog-content">
+              {{this.postAt}} | {{this.author}}
+            </div>
+            <p>
+              {{this.content}}
+            </p>
+            <div style="text-align: right;">
+              <span>
+              {{this.distance}}
+              </span>
+            </div>
+          </div>
+        </div>
+        {{/each}}
+
+      </div>
+    </div>
+    {{!-- <script src="assets/js/script.js"></script> --}}
+  </body>
+</html>
