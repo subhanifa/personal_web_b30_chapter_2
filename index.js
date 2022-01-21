@@ -279,14 +279,14 @@ app.get('/delete-blog/:id', function(request, response) {
 app.get('/blog-detail/:id', function(request, response) {
  
     let id = request.params.id
-    // const query = `SELECT tb_blog.id, title, tb_blog.content, tb_blog.image, tb_blog.post_at, tb_user.name AS author, tb_blog.author_id
-    // FROM tb_blog LEFT JOIN tb_user ON tb_blog.author_id = tb_user.id WHERE id = ${id}`
+    const query = `SELECT tb_blog.id, title, tb_blog.content, tb_blog.image, tb_blog.post_at, tb_user.name AS author, tb_blog.author_id
+    FROM tb_blog LEFT JOIN tb_user ON tb_blog.author_id = tb_user.id`
 
 
     db.connect(function(err, client, done)  {
         if (err) throw err
 
-        client.query(`SELECT * FROM tb_blog WHERE id = ${id}`, function(err, result) {
+        client.query(query, function(err, result) {
             if (err) throw err
 
             let dataView = result.rows[0]
