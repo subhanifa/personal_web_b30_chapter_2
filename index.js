@@ -6,11 +6,11 @@ const flash = require('express-flash')
 
 const app = express()
 const PORT =  process.env.PORT || 4000
-const db = require('./connection/db') // import connection
+const db = require('./connection/db')
 const upload = require('./middlewares/fileUpload')
 
 app.set('view engine', 'hbs') // set hbs
-app.use('/public', express.static(__dirname + '/public')) // set public folder/path
+app.use('/public', express.static(__dirname + '/public'))
 app.use('/uploads', express.static(__dirname + '/uploads'))
 app.use(express.urlencoded({extended: false}))
 
@@ -27,9 +27,8 @@ app.use(
         secret: 'secretValue'
     })
 )
-app.use(flash())
 
-// let isLogin = true
+app.use(flash())
 
 
 function getFullTime(time) {
@@ -81,32 +80,24 @@ function getDistanceTime(time) {
         }
       }
     }
-//   setInterval (getDistanceTime, 2000)
   }
 
 
 app.get('/', function(request, response) {
-
     db.connect(function(err, client, done)  {
-
         if (err) throw err
 
         client.query(`SELECT * FROM tb_exp`, function(err, result) {
-
             if (err) throw err
 
-            let dataView = result.rows
-            
-            // console.log(result.rows);
+            let dataView = result.rows            
 
             response.render('index', {blog: dataView, isLogin: request.session.isLogin, user: request.session.user})
         })
-
     })
-
 })
 
-// routing halaman add blog
+
 app.get('/add-blog', function(request, response) {
 
     if(!request.session.isLogin) {
@@ -123,30 +114,20 @@ app.get('/register', function(request, response) {
 
 app.post('/register', function(request, response) {
 
-    // console.log(request.body);
-
     const {inputName, inputEmail, inputPassword} = request.body
-
     const hashedPassword = bcrypt.hashSync(inputPassword, 10)
-
-    // console.log(hashedPassword);
-    // console.log(inputPassword);
 
     let query = `INSERT INTO tb_user (name, email, password) VALUES ('${inputName}', '${inputEmail}', '${hashedPassword}')`
 
     db.connect (function (err, client, done)    {
 
         if (err) throw err
-
         client.query (query, function (err, result) {
 
             if (err) throw err
-
             response.redirect('/login')
 
-
         })
-
     })
 })
 
@@ -157,8 +138,6 @@ app.get('/login', function(request, response) {
 app.post('/login', function(request, response) {
 
     const {inputEmail, inputPassword} = request.body
-
-    console.log(request.session);
     
     let query = `SELECT * FROM tb_user WHERE email = '${inputEmail}'`
 
@@ -168,16 +147,13 @@ app.post('/login', function(request, response) {
         client.query(query, function (err, result)  {
             if (err) throw err
 
-            // console.log(result.rows.length);
-
             if (result.rows.length == 0) {
-                request.flash('danger', 'Email belum terdaftar')
+                request.flash('danger', 'Email is Not Registered, Sign Up First')
                 response.redirect('/login')
                 return;
             }
 
             const isMatch = bcrypt.compareSync(inputPassword, result.rows[0].password)
-            // console.log(request.flash);
             if (isMatch) {
                 request.session.isLogin = true
                 request.session.user = {
@@ -189,15 +165,12 @@ app.post('/login', function(request, response) {
                 request.flash('success', 'Login Success')
                 response.redirect('/blog')
             } else {
-                request.flash('danger', 'Password tidak cocok')
+                request.flash('danger', 'Email & Password is Not Match')
                 response.redirect('/login')
                 console.log(isMatch);
             }
         })
     })
-
-
-
 })
 
 app.get('/contact', function(request, response) {
@@ -210,26 +183,21 @@ app.get('/blog', function(request, response) {
     FROM tb_blog LEFT JOIN tb_user ON tb_blog.author_id = tb_user.id`
     
     db.connect(function(err, client, done) {
-
         if (err) throw err
 
-        client.query(query, function(err, result) {
-           
+        client.query(query, function(err, result) {           
             if (err) throw err
-
-            // console.log(result.rows);
             
             let dataView = result.rows
-
             let newData = dataView.map(function(data){
                 return {
                     ...data,
                     isLogin: request.session.isLogin,
                     postAt: getFullTime(data.post_at),
-                    distance: getDistanceTime(data.post_at),
+                    distance: getDistanceTime(data.post_at)
                 } 
+            })      
 
-            })           
             response.render('blog', {isLogin : request.session.isLogin, user: request.session.user, blogs: newData})
         })
     })
@@ -241,22 +209,17 @@ app.post('/blog', upload.single('inputImage'), function(request, response) {
     let data = request.body
     let authorId = request.session.user.id
     let image = request.file.filename
-    console.log(image);
     
     db.connect(function(err, client, done)  {
-
         if (err) throw err
 
         client.query(`INSERT INTO tb_blog(title, content, image, author_id) VALUES 
         ('${data.inputTitle}','${data.inputContent}','${image}', '${authorId}')`, function(err, result) {
-
             if (err) throw err
-            // console.log(data);
 
             response.redirect('/blog')
         })
     })
-
 })
 
 app.get('/edit-blog/:id', function(request, response) {   
@@ -265,16 +228,12 @@ app.get('/edit-blog/:id', function(request, response) {
     let query = `SELECT * FROM tb_blog WHERE id = ${id}`
 
     db.connect(function (err, client, done) {
-
         if (err) throw err
 
         client.query(query,function (err, result) {
-
             if (err) throw err
         
-            let dataView = result.rows[0]
-
-            // console.log(dataView);           
+            let dataView = result.rows[0]         
 
             response.render('edit-blog', {blog: dataView, id: id})
         })
@@ -285,20 +244,14 @@ app.get('/edit-blog/:id', function(request, response) {
 app.post ('/edit-blog/:id', upload.single('inputImage'), function(request, response) {
 
     let id = request.params.id
-
-    let data = request.body
-    
+    let data = request.body  
     let image = request.file.filename
-
-    let query = `UPDATE tb_blog SET title = '${data.editTitle}', content = '${data.editContent}', image = '${image}' WHERE id = ${id}`
-    
+    let query = `UPDATE tb_blog SET title = '${data.editTitle}', content = '${data.editContent}', image = '${image}' WHERE id = ${id}`   
 
     db.connect(function(err, client, done)  {
-
         if (err) throw err
 
         client.query(query, function(err, result) {
-
             if (err) throw err
 
             response.redirect('/blog')
@@ -313,15 +266,12 @@ app.get('/delete-blog/:id', function(request, response) {
     let query = `DELETE FROM tb_blog WHERE id = ${id}`
 
     db.connect(function (err, client, done) {
-
         if (err) throw err
 
         client.query(query,function (err, result) {
-
             if (err) throw err
             
             response.redirect('/blog')
-
         })
     })
 
@@ -333,22 +283,16 @@ app.get('/blog-detail/:id', function(request, response) {
     let id = request.params.id
     
     db.connect(function(err, client, done)  {
-
         if (err) throw err
 
         client.query(`SELECT * FROM tb_blog WHERE id = ${id}`, function(err, result) {
-
             if (err) throw err
 
             let dataView = result.rows[0]
             
-            console.log(dataView);
-
             response.render('blog-detail', {id: id, blog: dataView})
         })
-
     })
-
 })
 
 app.get('/logout', function(request, response)  {

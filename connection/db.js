@@ -7,7 +7,8 @@ const dbPool = new Pool ({
     database: 'personal_web_b30_sesi1',
     port: 5432,
     user: 'postgres',
-    password: 'sasalely01'
+    password: 'sasalely01',
+    idleTimeoutMillis: 0
 })
 
 module.exports = dbPool
