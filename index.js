@@ -82,7 +82,6 @@ function getDistanceTime(time) {
     }
   }
 
-
 app.get('/', function(request, response) {
     db.connect(function(err, client, done)  {
         if (err) throw err
@@ -96,7 +95,6 @@ app.get('/', function(request, response) {
         })
     })
 })
-
 
 app.get('/add-blog', function(request, response) {
 
@@ -238,7 +236,6 @@ app.get('/edit-blog/:id', function(request, response) {
     })
 })
 
-
 app.post ('/edit-blog/:id', upload.single('inputImage'), function(request, response) {
 
     let id = request.params.id
@@ -275,13 +272,12 @@ app.get('/delete-blog/:id', function(request, response) {
 
 })
 
-
 app.get('/blog-detail/:id', function(request, response) {
  
     let id = request.params.id
-    const query = `SELECT tb_blog.id, title, tb_blog.content, tb_blog.image, tb_blog.post_at, tb_user.name AS author, tb_blog.author_id
-    FROM tb_blog LEFT JOIN tb_user ON tb_blog.author_id = tb_user.id`
 
+    const query = `SELECT tb_blog.id, tb_blog.title, tb_blog.content, tb_blog.post_at, tb_blog.image, tb_user.name AS author,tb_blog.author_id 
+    FROM tb_blog LEFT JOIN tb_user ON tb_blog.author_id = tb_user.id WHERE tb_blog.id = ${id}`
 
     db.connect(function(err, client, done)  {
         if (err) throw err
@@ -292,6 +288,7 @@ app.get('/blog-detail/:id', function(request, response) {
             let dataView = result.rows[0]
             let dataDetail = {
                 ...dataView,
+                isLogin: request.session.isLogin,
                 postAt: getFullTime(dataView.post_at)
             }
             

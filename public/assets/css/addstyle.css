@@ -1,3 +1,8 @@
+* {
+    text-decoration: none;
+    list-style-type: none;
+}
+
 .bg-orange {
     background-color: orangered;
 }
@@ -17,3 +22,5 @@
 .container-form {
     width: 400px;
 }
+
+
